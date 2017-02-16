@@ -122,7 +122,7 @@ module.exports = {
 
     self.docBeforeSave = function(req, doc, options) {
 
-
+      console.log("Document ",doc.slug);
       //TODO check why req.locale is always en
       // using req.session.locale as a fallback
       var locale = req.locale;
@@ -135,12 +135,19 @@ module.exports = {
       }
 
 
-      // I don't think we need this here
-      // ensureProperties(doc,locale);
-
       if(!locale){
         return;
       }
+
+
+
+
+      u.ensureProperties(doc,{
+        "defaultLocale": self.defaultLocale,
+        "locale": locale,
+        "locales":options.locales
+      });
+
 
       var before = JSON.stringify(doc.localized[locale] || {});
 
