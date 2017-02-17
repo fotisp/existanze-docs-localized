@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var async = require('async');
+var util = require("util");
 var u = require("./lib/utils");
 
 module.exports = {
@@ -122,7 +123,6 @@ module.exports = {
 
     self.docBeforeSave = function(req, doc, options) {
 
-      console.log("Document ",doc.slug);
       //TODO check why req.locale is always en
       // using req.session.locale as a fallback
       var locale = req.locale;
@@ -148,7 +148,6 @@ module.exports = {
         "locales":options.locales
       });
 
-
       var before = JSON.stringify(doc.localized[locale] || {});
 
       _.each(doc, function(value, key) {
@@ -168,7 +167,6 @@ module.exports = {
         // Revert .body to the default culture's body, unless
         // that doesn't exist yet, in which case we let it spawn from
         // the current culture
-
         if (_.has(doc.localized[self.defaultLocale], key)) {
           doc[key] = doc.localized[self.defaultLocale][key];
         } else {
@@ -199,6 +197,11 @@ module.exports = {
 
       });
 
+
+      /**
+       * TODO This sometimes causes circular reference problems
+       * we need to check how else to do it
+       */
       var after = JSON.stringify(doc.localized[locale] || {});
 
       if (before !== after) {
