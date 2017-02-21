@@ -242,6 +242,7 @@ module.exports = {
         _.each(module.schema,function(field){
 
           if(
+            field.type == "area" ||
             self.localized.indexOf(field.name) >= 0 ||
             self.localized.indexOf(moduleName+":"+field.name) >=0 ){
             field._localized = true;
