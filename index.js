@@ -86,7 +86,7 @@ module.exports = {
       }else{
         req.locale = options.default;
       }
-
+      req.data.activeLocale = req.locale;
       return next();
 
     };
@@ -183,15 +183,17 @@ module.exports = {
 
       _.each(self.localized,function(name){
 
-        if(u.isArea(doc[name])){
-          return;
-        }
-
         name = u.localizeForPage(doc,name);
 
         if(!name){
           return;
         }
+
+        if(u.isArea(doc[name])){
+          return;
+        }
+
+
 
         doc.localized[locale][name] = doc[name];
 
