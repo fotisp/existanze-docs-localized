@@ -105,6 +105,8 @@ module.exports = {
       }
 
       if (!_.has(options.locales, matches[1])) {
+        req.locale = self.defaultLocale;
+        req.session.locale = req.locale;
         return next();
       }
 
@@ -180,6 +182,10 @@ module.exports = {
 
 
       _.each(self.localized,function(name){
+
+        if(u.isArea(doc[name])){
+          return;
+        }
 
         name = u.localizeForPage(doc,name);
 
